@@ -9,8 +9,8 @@ execute_process(
 
 # Import dependencies:
 include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
-conan_basic_setup()
 conan_define_targets()
 
 add_subdirectory(src)
+enable_testing()
 add_subdirectory(test)
