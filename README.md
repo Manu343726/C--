@@ -1,5 +1,5 @@
 # C-- [![Build Status](https://travis-ci.org/Manu343726/C--.svg?branch=master)](https://travis-ci.org/Manu343726/C--) [![Join the chat at https://gitter.im/Manu343726-cminusminus/Lobby](https://badges.gitter.im/Manu343726-cminusminus/Lobby.svg)](https://gitter.im/Manu343726-cminusminus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-The sandbox where we show our increasily depressing C++ skills
+The sandbox where we show our increasingly depressing C++ skills
 
 ## Dependencies
 
@@ -22,7 +22,7 @@ The project follows an `include/` `src/` `test/` sourcetree layout, where:
 ### How exercises are defined:
 
 The description of the exercise will be provided **as an issue tagged as `exercise`, numbered with the issue number**.
-Multiple exercises may be part of a same topic, each topic represented as a module in the project (Data strcutures, utilities, etc).
+Multiple exercises may be part of a same topic, each topic represented as a module in the project (Data structures, utilities, etc).
 
 The exercise may include or not all the bootstrapping stuff, like adding CMakeLists.txt files at the corresponding directories for
 library and tests targets, new dependencies, etc.
