@@ -1,6 +1,4 @@
-# C-- [![Build Status](https://travis-ci.org/Manu343726/C--.svg?branch=master)](https://travis-ci.org/Manu343726/C--)
-
-[![Join the chat at https://gitter.im/Manu343726-cminusminus/Lobby](https://badges.gitter.im/Manu343726-cminusminus/Lobby.svg)](https://gitter.im/Manu343726-cminusminus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# C-- [![Build Status](https://travis-ci.org/Manu343726/C--.svg?branch=master)](https://travis-ci.org/Manu343726/C--) [![Join the chat at https://gitter.im/Manu343726-cminusminus/Lobby](https://badges.gitter.im/Manu343726-cminusminus/Lobby.svg)](https://gitter.im/Manu343726-cminusminus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 The sandbox where we show our increasily depressing C++ skills
 
 ## Dependencies
