@@ -1,4 +1,4 @@
-# C--
+# C-- [![Build Status](https://travis-ci.org/Manu343726/C--.svg?branch=master)](https://travis-ci.org/Manu343726/C--)
 The sandbox where we show our increasily depressing C++ skills
 
 ## Dependencies
