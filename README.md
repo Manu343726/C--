@@ -7,6 +7,7 @@ The sandbox where we show our increasily depressing C++ skills
  - **[conan.io](https://www.conan.io/)** as package manager.
  - **[Google Test](https://github.com/google/googletest) and [Google Mock](https://github.com/google/googlemock)** for unit testing (From conan.io)
  - **A C++14 compiler** GCC 5.1 or clang 3.8 if possible. VS2015 may work.
+ - **[Doxygen](http://www.stack.nl/~dimitri/doxygen)** to make the documentation.
 
 ## How we work
 
@@ -18,6 +19,7 @@ The project follows an `include/` `src/` `test/` sourcetree layout, where:
  - `include/siminusminus/`: Contains the headers of the project (one subdirectory per module, see instructions bellow), 
  - `src/`: Contains the implementation files (.cpp files) of the project, one subdirectory per module.
  - `test/`: Unit tests, one subdirectory per module.
+ - `doc/`: documentation generated with Doxygen.
 
 ### How exercises are defined:
 

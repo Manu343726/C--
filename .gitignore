@@ -1,2 +1,6 @@
 # Ignore buildtree:
 build/
+_build/
+
+# Ignore OSX files
+.DS_Store
