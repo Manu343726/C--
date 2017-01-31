@@ -5,7 +5,7 @@ namespace utils{
 
 	void cmm::utils::DebugUtilities::log(const std::string& string, bool newline)
 	{
-		#ifdef _DEBUG
+		#ifndef NDEBUG
 			std::cout << string << std::endl;
 			if (newline) // We do this to not mix '/n' and std::endl
 				std::cout << std::endl;
