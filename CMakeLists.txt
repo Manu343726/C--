@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS_DEBUG -D"_DEBUG")
 execute_process(
     COMMAND conan install "${CMAKE_SOURCE_DIR}" --build=outdated
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-)
+    )
 
 # Import dependencies:
 include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
