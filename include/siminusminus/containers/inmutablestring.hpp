@@ -123,7 +123,6 @@ public:
     std::string toString() const;
 
 
-
 private:
 
 	/**
@@ -131,7 +130,7 @@ private:
      * @param newLenght: lenght of the string to create.
      * @param newString: C string.
      */
-	void createString(const size_t& newLenght, const char* newString);
+	void createString(const size_t newLenght, const char* newString);
 
 	/**
      * For debug. The function returns the length and the string from the
@@ -139,13 +138,18 @@ private:
      */
 	void stringLog() const;
 
+    /*
+     * Sets the string and its length to the default value;
+     */
+    void setDefault();
+
 	char* _string;  // String value
 	size_t _length; // length of the string
 };
 
 /**
 * \ingroup containers
-* \brief Implements an inmutable string
+* \brief Implements an inmutable string iterator
 *
 * Class to Iterate around an InmutableString object.
 * Here a simple example:
@@ -210,7 +214,13 @@ public:
      */
     char& operator*() const;
 
+    /**
+     * returns the pointer to the begin of the InmutableString.
+     */
     const char* const begin() const;
+    /**
+     * returns the pointer to the end of the InmutableString.
+     */
     const char* const end() const; 
 
 private:

@@ -4,18 +4,15 @@
 #include <iostream>
 #include <string>
 
-namespace cmm
-{
-
-namespace utils
-{
+namespace cmm {
+namespace utils{
 
 /**
  * \ingroup utils
  * \brief Debug helping class.
  *
- * Help class to debug our libraries. We set with CMAKE the "_DEBUG" macro only when
- * the CMAKE_BUILD_TYPE is "Debug".
+ * Help class to debug our libraries. We will use the debug macro "NDEBUG" that
+ * cmake sets on release builds.
  */
 class DebugUtilities
 {
@@ -30,8 +27,7 @@ public:
    
 };
 
-} // NAMESPACE utils
-
-} // NAMESPACE cmm
+} // namespace utils
+} // namespace cmm
 
 #endif // SIMINUSMINUS_UTILS_DEBUGUTILITIES_HPP

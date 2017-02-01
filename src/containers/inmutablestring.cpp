@@ -1,5 +1,7 @@
 #include <siminusminus/containers/inmutablestring.hpp>
 
+using namespace cmm::utils;
+
 namespace cmm{
 namespace containers{
 
@@ -34,9 +36,8 @@ InmutableString::~InmutableString()
 		cmm::utils::DebugUtilities::log(std::string("--- ~InmutableString()."));
 		stringLog();
 
-		delete(_string);
-		_string = nullptr;
-		_length = 0;
+		delete _string;
+		setDefault(); // To take precautions
 	}
 	else
 		cmm::utils::DebugUtilities::log(std::string("--- ~InmutableString(). Nothing to delete, void string."));
@@ -49,7 +50,6 @@ char InmutableString::operator[](const size_t index) const
 
 bool InmutableString::operator==(const InmutableString& rhs) const
 {
-	// return strcmp(this->_string, rhs._string) == 0;
 	InmutableStringIterator lhsit(this->_string);
 	InmutableStringIterator rhsit(rhs._string);
 
@@ -93,10 +93,9 @@ InmutableString& InmutableString::operator=(const InmutableString& rhs)
 		return *this; // Not doing the assignment
 
 	if (this->_string) 
-		::operator delete(this->_string); // Erase data
+		delete this->_string; // Erase data
 
-	this->_string = nullptr; // To take precautions
-	this->_length = 0;       // To take precautions
+	setDefault(); // To take precautions
 
 	createString(rhs._length, rhs._string);
 
@@ -124,11 +123,11 @@ std::string InmutableString::toString() const
 	return std::string(_string);
 }
 
-void InmutableString::createString(const size_t& newLength, const char* newString)
+void InmutableString::createString(const size_t newLength, const char* newString)
 {
 	size_t newSize = sizeof(char) * (newLength+1); // Inlude '/0'
 
-	_string = new char(newSize); // Get allocation memory for our string
+	_string = new char[newSize]; // Get allocation memory for our string
 	_length = newLength;
 
 	std::strcpy(_string, newString); // Copy the string
@@ -136,8 +135,14 @@ void InmutableString::createString(const size_t& newLength, const char* newStrin
 
 void InmutableString::stringLog() const
 {
-	cmm::utils::DebugUtilities::log(std::string("String: " + this->toString()));
-	cmm::utils::DebugUtilities::log(std::string("String length: ") + std::to_string(_length), true);
+	DebugUtilities::log("String: " + this->toString());
+	DebugUtilities::log("String length: " + std::to_string(_length), true);
+}
+
+void InmutableString::setDefault()
+{
+	_string = nullptr;
+	_length = 0;
 }
 
 //////////////////////////
