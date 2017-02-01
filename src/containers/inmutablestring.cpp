@@ -3,18 +3,18 @@
 namespace cmm{
 namespace containers{
 
-////////////////
-// Constructors
-////////////////
+///////////////////
+// InmutableString
+///////////////////
 
-cmm::containers::InmutableString::InmutableString(): _string(nullptr), _length(0)
+InmutableString::InmutableString(): _string(nullptr), _length(0)
 {
 	createString(_length, "");
 	cmm::utils::DebugUtilities::log(std::string("+++ InmutableString() called. void string created."));
 	stringLog();
 }
 
-cmm::containers::InmutableString::InmutableString(const char* string): _string(nullptr), _length(0)
+InmutableString::InmutableString(const char* string): _string(nullptr), _length(0)
 {
 
 	createString(std::strlen(string), string);
@@ -22,16 +22,12 @@ cmm::containers::InmutableString::InmutableString(const char* string): _string(n
 	stringLog();
 }
 
-cmm::containers::InmutableString::InmutableString(const InmutableString& istring): InmutableString(istring._string)
+InmutableString::InmutableString(const InmutableString& istring): InmutableString(istring._string)
 {
 	cmm::utils::DebugUtilities::log(std::string("+++ InmutableString(const InmutableString& istring). Copy constructor."));
 }
 
-//////////////
-// Destructor
-//////////////
-
-cmm::containers::InmutableString::~InmutableString()
+InmutableString::~InmutableString()
 {
 	if (_string != nullptr)
 	{
@@ -46,41 +42,50 @@ cmm::containers::InmutableString::~InmutableString()
 		cmm::utils::DebugUtilities::log(std::string("--- ~InmutableString(). Nothing to delete, void string."));
 }
 
-/////////////
-// Operators
-/////////////
-
-char cmm::containers::InmutableString::operator[](const size_t index) const
+char InmutableString::operator[](const size_t index) const
 {
 	return _string[index];
 }
 
-bool cmm::containers::InmutableString::operator==(const InmutableString& rhs) const
+bool InmutableString::operator==(const InmutableString& rhs) const
 {
-	return strcmp(this->_string, rhs._string) == 0;
+	// return strcmp(this->_string, rhs._string) == 0;
+	InmutableStringIterator lhsit(this->_string);
+	InmutableStringIterator rhsit(rhs._string);
+
+	return !std::lexicographical_compare(lhsit.begin(), lhsit.end(),
+								 rhsit.begin(), rhsit.end());
 }
 
-bool cmm::containers::InmutableString::operator>(const InmutableString& rhs) const
+bool InmutableString::operator>(const InmutableString& rhs) const
 {
-	return strcmp(this->_string, rhs._string) < 0; // -1 means that this is greather than rhs.
+	InmutableStringIterator lhsit(this->_string);
+	InmutableStringIterator rhsit(rhs._string);
+
+	return std::lexicographical_compare(lhsit.begin(), lhsit.end(),
+								 rhsit.begin(), rhsit.end());
 }
 
-bool cmm::containers::InmutableString::operator<(const InmutableString& rhs) const
+bool InmutableString::operator<(const InmutableString& rhs) const
 {
-	return strcmp(this->_string, rhs._string) > 0; // 1 means that rhs is greather than this.
+	InmutableStringIterator lhsit(this->_string);
+	InmutableStringIterator rhsit(rhs._string);
+
+	return !std::lexicographical_compare(lhsit.begin(), lhsit.end(),
+								 rhsit.begin(), rhsit.end());
 }
 
-bool cmm::containers::InmutableString::operator>=(const InmutableString& rhs) const
+bool InmutableString::operator>=(const InmutableString& rhs) const
 {
-	return operator>(rhs) && operator==(rhs);
+	return *this == rhs || *this > rhs;
 }
 
-bool cmm::containers::InmutableString::operator<=(const InmutableString& rhs) const
+bool InmutableString::operator<=(const InmutableString& rhs) const
 {
-	return operator<(rhs) && operator==(rhs);
+	return *this == rhs || *this < rhs;
 }
 
-InmutableString& cmm::containers::InmutableString::operator=(const InmutableString& rhs)
+InmutableString& InmutableString::operator=(const InmutableString& rhs)
 {
 	cmm::utils::DebugUtilities::log(std::string("*** InmutableString::operator=(const InmutableString& rhs)."));
 
@@ -114,16 +119,12 @@ std::ostream& operator<<(std::ostream& os, const InmutableString& istring)
     return os;
 }
 
-///////////
-// Methods
-///////////
-
-std::string cmm::containers::InmutableString::toString() const
+std::string InmutableString::toString() const
 {
 	return std::string(_string);
 }
 
-void cmm::containers::InmutableString::createString(const size_t& newLength, const char* newString)
+void InmutableString::createString(const size_t& newLength, const char* newString)
 {
 	size_t newSize = sizeof(char) * (newLength+1); // Inlude '/0'
 
@@ -133,11 +134,73 @@ void cmm::containers::InmutableString::createString(const size_t& newLength, con
 	std::strcpy(_string, newString); // Copy the string
 }
 
-void cmm::containers::InmutableString::stringLog() const
+void InmutableString::stringLog() const
 {
 	cmm::utils::DebugUtilities::log(std::string("String: " + this->toString()));
 	cmm::utils::DebugUtilities::log(std::string("String length: ") + std::to_string(_length), true);
 }
 
-} // NAMESPACE containers
-} // NAMESPACE cmm
+//////////////////////////
+// InmutableStringIterator
+//////////////////////////
+
+InmutableStringIterator::InmutableStringIterator(const InmutableString& istring): _istring(istring),
+																				  _currentpos(0),
+																				  _begin(_istring._string),
+																				  _end(&_istring._string[_istring._length])
+{
+
+}
+
+InmutableStringIterator::InmutableStringIterator(const InmutableStringIterator& istringit): InmutableStringIterator(istringit._istring)
+{
+
+}
+
+InmutableStringIterator& InmutableStringIterator::operator++()
+{
+	if (!arriveEnd())
+		++_currentpos;
+
+	return *this;
+}
+
+InmutableStringIterator InmutableStringIterator::operator++(int rhs)
+{
+	InmutableStringIterator istringit (this->_istring);
+	++istringit;
+	return istringit;
+}
+
+bool InmutableStringIterator::operator==(const InmutableStringIterator& rhs)
+{
+	return _currentpos == rhs._currentpos;
+}
+
+bool InmutableStringIterator::operator!=(const InmutableStringIterator& rhs)
+{
+	return _currentpos != rhs._currentpos;
+}
+
+bool InmutableStringIterator::arriveEnd() const
+{
+	return _currentpos >= _istring._length;
+}
+
+char& InmutableStringIterator::operator*() const
+{
+	return _istring._string[_currentpos];
+}
+
+const char* const InmutableStringIterator::begin() const
+{
+	return _begin;
+}
+
+const char* const InmutableStringIterator::end() const
+{
+	return _end;
+}
+
+} // namespace containers
+} // namespace cmm

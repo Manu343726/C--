@@ -101,15 +101,28 @@ TEST(operators, isEqual)
 
 TEST(operators, greatherThan)
 {
-	InmutableString str1("Hello World");
-	InmutableString str2("HelloWorld");
-	EXPECT_TRUE(str1 > str2);
+	InmutableString str1("dabc");
+	InmutableString str2("cbda");
+	EXPECT_TRUE(str1 >= str2);
 }
 
 TEST(operators, lessThan)
 {
-	InmutableString str1("HelloWorld");
-	InmutableString str2("Hello World");
-	EXPECT_TRUE(str1 < str2);
+	InmutableString str1("acdb");
+	InmutableString str2("cdab");
+	EXPECT_FALSE(str1 < str2);
+}
+
+//////////////////
+// Iterator
+//////////////////
+
+TEST(iterator, working)
+{
+	InmutableStringIterator istringit(InmutableString("HolaMundo"));
+	for (; !istringit.arriveEnd(); ++istringit)
+	{
+		std::cout << *istringit << std::endl;
+	}
 }
 
