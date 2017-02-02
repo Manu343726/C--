@@ -3,126 +3,174 @@
 
 using namespace ::testing;
 using namespace ::cmm::containers;
+using namespace ::cmm::utils;
 
-/////////////////
-// Initialization
-/////////////////
+///////////////////
+// InmutableString
+///////////////////
 
-TEST(initialization, voidConstructor)
+TEST(InmutableString_initialization, voidConstructor)
 {
 	InmutableString str1;
-	EXPECT_TRUE(str1 == "");
+	EXPECT_EQ(str1, "");
 }
 
-TEST(initialization, constructWithCString)
+TEST(InmutableString_initialization, constructWithCString)
 {
 	InmutableString str("Hello");
-	EXPECT_TRUE(str == "Hello");
+	EXPECT_EQ(str, "Hello");
 }
 
-TEST(initialization, constructWithInmutableString)
+TEST(InmutableString_initialization, constructWithInmutableString)
 {
 	InmutableString str("Hello");
 	InmutableString str1 = str;
-	EXPECT_TRUE(str1 == "Hello");
+	EXPECT_EQ(str1, "Hello");
 }
 
-TEST(initialization, stdStringObject)
+TEST(InmutableString_initialization, stdStringObject)
 {
 	InmutableString str("Hello");
 	std::string string("Hello");
-	EXPECT_TRUE(str.toString() == string);
+	EXPECT_EQ(str.toString(), string);
 }
 
-////////////
-// Operators
-////////////
-
-TEST(operators, assignmentOperator)
+TEST(InmutableString_operators, assignmentOperator)
 {
 	InmutableString str("Hello");
 	InmutableString str1;
 	str1 = str;
-	EXPECT_TRUE(str1 == "Hello");
+	EXPECT_EQ(str1, "Hello");
 }
 
-TEST(operators, concatTwoVoidString)
+TEST(InmutableString_operators, concatTwoVoidString)
 {
 	InmutableString str;
 	InmutableString str1;
 	InmutableString str2;
 	str = str1 + str2; 
-	EXPECT_TRUE(str2 == "");
+	EXPECT_EQ(str2, "");
 }
 
-TEST(operators, concatVoidString)
+TEST(InmutableString_operators, concatVoidString)
 {
 	InmutableString str;
 	InmutableString str1("Hello");
 	InmutableString str2;
 	str2 = str + str1; 
-	EXPECT_TRUE(str2 == "Hello");
+	EXPECT_EQ(str2, "Hello");
 }
 
-TEST(operators, concatStringVoid)
+TEST(InmutableString_operators, concatStringVoid)
 {
 	InmutableString str("Hello");
 	InmutableString str1;
 	InmutableString str2;
 	str2 = str + str1; 
-	EXPECT_TRUE(str2 == "Hello");
+	EXPECT_EQ(str2, "Hello");
 }
 
-TEST(operators, concatStringString)
+TEST(InmutableString_operators, concatStringString)
 {
 	InmutableString str("Hello ");
 	InmutableString str1("World");
 	InmutableString str2;
 	str2 = str + str1; 
-	EXPECT_TRUE(str2 == "Hello World");
+	EXPECT_EQ(str2, "Hello World");
 }
 
-TEST(operators, getNElement)
+TEST(InmutableString_operators, getNElement)
 {
 	InmutableString str("Hello");
-	EXPECT_TRUE(str[0] == 'H' &&
-		        str[1] == 'e' &&
-		        str[2] == 'l' &&
-		        str[3] == 'l' &&
-		        str[4] == 'o');
+	EXPECT_EQ(str[0], 'H');
+	EXPECT_EQ(str[1], 'e');
+	EXPECT_EQ(str[2], 'l');
+	EXPECT_EQ(str[3], 'l');
+	EXPECT_EQ(str[4], 'o');
 }
 
-TEST(operators, isEqual)
+TEST(InmutableString_operators, isEqual)
 {
 	InmutableString str1("HelloWorld");
 	InmutableString str2("HelloWorld");
-	EXPECT_TRUE(str1 == str2);
+	EXPECT_EQ(str1, str2);
 }
 
-TEST(operators, greatherThan)
+TEST(InmutableString_operators, greaterThan)
 {
 	InmutableString str1("dabc");
 	InmutableString str2("cbda");
-	EXPECT_TRUE(str1 >= str2);
+	EXPECT_GT(str1, str2);
 }
 
-TEST(operators, lessThan)
+TEST(InmutableString_operators, lessThan)
 {
 	InmutableString str1("acdb");
 	InmutableString str2("cdab");
-	EXPECT_FALSE(str1 < str2);
+	EXPECT_LT(str1, str2);
 }
 
-//////////////////
-// Iterator
-//////////////////
-
-TEST(iterator, working)
+TEST(InmutableString_operators, lessOrEqualThan)
 {
-	InmutableStringIterator istringit(InmutableString("HolaMundo"));
-	for (; !istringit.arriveEnd(); ++istringit)
+	InmutableString str1("abcd");
+	InmutableString str2("abcd");
+	InmutableString str3("dbcd");
+	EXPECT_LE(str1, str2);
+	EXPECT_LE(str1, str3);
+}
+
+TEST(InmutableString_operators, greaterOrEqualThan)
+{
+	InmutableString str1("abcd");
+	InmutableString str2("abcd");
+	InmutableString str3("aacd");
+	EXPECT_GE(str1, str2);
+	EXPECT_GE(str1, str3);
+}
+
+//////////////////////////
+// InmutableStringIterator
+//////////////////////////
+
+TEST(InmutableStringIterator_increment, preincrement)
+{
+	InmutableStringIterator istringit(InmutableString("Hello"));
+	InmutableString istring("Hello");
+	size_t pos = 0;
+	while (!istringit.arriveEnd())
 	{
-		std::cout << *istringit << std::endl;
+		EXPECT_EQ(istring[pos], *istringit);
+		InmutableStringIterator itaux(++istringit);
+		DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
+		++pos;
 	}
 }
 
+TEST(InmutableStringIterator_increment, postincrement)
+{
+	InmutableStringIterator istringit(InmutableString("Hello"));
+	InmutableString istring("Hello");
+	size_t pos = 0;
+	while (!istringit.arriveEnd())
+	{
+		EXPECT_EQ(istring[pos], *istringit);
+		InmutableStringIterator itaux(istringit++);
+		DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
+		++pos;
+	}
+}
+
+TEST(InmutableStringIterator_operators, equalOrNotEqual)
+{
+	InmutableString istring("Testing this stuff");
+	InmutableStringIterator istringit1 (istring);
+	InmutableStringIterator istringit2 (istring);
+
+	EXPECT_EQ(*istringit1, *istringit2);
+
+	++istringit1;
+	EXPECT_NE(*istringit1, *istringit2);
+
+	++istringit2;
+	EXPECT_EQ(*istringit1, *istringit2);
+}

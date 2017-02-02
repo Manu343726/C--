@@ -62,8 +62,8 @@ bool InmutableString::operator>(const InmutableString& rhs) const
 	InmutableStringIterator lhsit(this->_string);
 	InmutableStringIterator rhsit(rhs._string);
 
-	return std::lexicographical_compare(lhsit.begin(), lhsit.end(),
-								 rhsit.begin(), rhsit.end());
+	return !std::lexicographical_compare(lhsit.begin(), lhsit.end(),
+								 		rhsit.begin(), rhsit.end());
 }
 
 bool InmutableString::operator<(const InmutableString& rhs) const
@@ -71,8 +71,8 @@ bool InmutableString::operator<(const InmutableString& rhs) const
 	InmutableStringIterator lhsit(this->_string);
 	InmutableStringIterator rhsit(rhs._string);
 
-	return !std::lexicographical_compare(lhsit.begin(), lhsit.end(),
-								 rhsit.begin(), rhsit.end());
+	return std::lexicographical_compare(lhsit.begin(), lhsit.end(),
+								 		 rhsit.begin(), rhsit.end());
 }
 
 bool InmutableString::operator>=(const InmutableString& rhs) const
@@ -159,7 +159,7 @@ InmutableStringIterator::InmutableStringIterator(const InmutableString& istring)
 
 InmutableStringIterator::InmutableStringIterator(const InmutableStringIterator& istringit): InmutableStringIterator(istringit._istring)
 {
-
+	_currentpos = istringit._currentpos;
 }
 
 InmutableStringIterator& InmutableStringIterator::operator++()
@@ -167,24 +167,27 @@ InmutableStringIterator& InmutableStringIterator::operator++()
 	if (!arriveEnd())
 		++_currentpos;
 
-	return *this;
+	return *this; 
 }
 
 InmutableStringIterator InmutableStringIterator::operator++(int rhs)
 {
-	InmutableStringIterator istringit (this->_istring);
-	++istringit;
+	InmutableStringIterator istringit (*this);
+
+	if (!arriveEnd())
+		_currentpos++;
+
 	return istringit;
 }
 
 bool InmutableStringIterator::operator==(const InmutableStringIterator& rhs)
 {
-	return _currentpos == rhs._currentpos;
+	return _currentpos == rhs._currentpos && _istring == rhs._istring;
 }
 
 bool InmutableStringIterator::operator!=(const InmutableStringIterator& rhs)
 {
-	return _currentpos != rhs._currentpos;
+	return _currentpos != rhs._currentpos || _istring == rhs._istring;
 }
 
 bool InmutableStringIterator::arriveEnd() const
