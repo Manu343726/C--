@@ -5,7 +5,7 @@
 #include <string>
 
 namespace cmm {
-namespace utils{
+namespace utils {
 
 /**
  * \ingroup utils
@@ -21,9 +21,8 @@ public:
     /**
      * Allows show messages on the console when your build type is on Debug.
      * @param string: string to write on console.
-     * @param newline: adds the newline special character at the end of the string.
      */
-    static void log(const std::string& string, bool newline = false);
+    static void log(const std::string& string);
    
 };
 

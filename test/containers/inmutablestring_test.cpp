@@ -21,6 +21,14 @@ TEST(InmutableString_initialization, constructWithCString)
 	EXPECT_EQ(str, "Hello");
 }
 
+TEST(InmutableString_initialization, moveContructor)
+{
+	InmutableString str1 ("Hello");
+	InmutableString str2 ("World");
+	InmutableString str = str1 + str2;
+	EXPECT_EQ(str, "HelloWorld");
+}
+
 TEST(InmutableString_initialization, constructWithInmutableString)
 {
 	InmutableString str("Hello");
@@ -41,6 +49,15 @@ TEST(InmutableString_operators, assignmentOperator)
 	InmutableString str1;
 	str1 = str;
 	EXPECT_EQ(str1, "Hello");
+}
+
+TEST(InmutableString_operators, moveAssignmentOperator)
+{
+	InmutableString str("Hello");
+	InmutableString str1(" C--");
+	InmutableString str2;
+	str2 = str + str1;
+	EXPECT_EQ(str2, "Hello C--");
 }
 
 TEST(InmutableString_operators, concatTwoVoidString)
@@ -128,19 +145,28 @@ TEST(InmutableString_operators, greaterOrEqualThan)
 	EXPECT_GE(str1, str3);
 }
 
-//////////////////////////
-// InmutableStringIterator
-//////////////////////////
+////////////////////////////////////////
+// InmutableIterator & Inmutable Viewer
+////////////////////////////////////////
 
 TEST(InmutableStringIterator_increment, preincrement)
 {
-	InmutableStringIterator istringit(InmutableString("Hello"));
 	InmutableString istring("Hello");
+
+	InmutableIterator<char> iitbegin (istring[0]);
+	InmutableIterator<char> iitend (istring[6]);// [0 --> H, ... ,
+												// 4 --> o, 
+												// 5 --> '\0', 
+												// 6 --> Represent the iterator end]
+	InmutableViewer<char> viewer (iitbegin, iitend);
+
+	auto it = viewer.begin();
 	size_t pos = 0;
-	while (!istringit.arriveEnd())
+
+	while (it != viewer.end())
 	{
-		EXPECT_EQ(istring[pos], *istringit);
-		InmutableStringIterator itaux(++istringit);
+		EXPECT_EQ(istring[pos], *it);
+		InmutableIterator<char> itaux(++it);
 		DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
 		++pos;
 	}
@@ -148,13 +174,22 @@ TEST(InmutableStringIterator_increment, preincrement)
 
 TEST(InmutableStringIterator_increment, postincrement)
 {
-	InmutableStringIterator istringit(InmutableString("Hello"));
 	InmutableString istring("Hello");
+
+	InmutableIterator<char> iitbegin (istring[0]);
+	InmutableIterator<char> iitend (istring[6]);// [0 --> H, ... ,
+												// 4 --> o, 
+												// 5 --> '\0', 
+												// 6 --> Represent the iterator end]
+	InmutableViewer<char> viewer (iitbegin, iitend);
+
+	auto it = viewer.begin();
 	size_t pos = 0;
-	while (!istringit.arriveEnd())
+
+	while (it != viewer.end())
 	{
-		EXPECT_EQ(istring[pos], *istringit);
-		InmutableStringIterator itaux(istringit++);
+		EXPECT_EQ(istring[pos], *it);
+		InmutableIterator<char> itaux(it++);
 		DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
 		++pos;
 	}
@@ -163,8 +198,8 @@ TEST(InmutableStringIterator_increment, postincrement)
 TEST(InmutableStringIterator_operators, equalOrNotEqual)
 {
 	InmutableString istring("Testing this stuff");
-	InmutableStringIterator istringit1 (istring);
-	InmutableStringIterator istringit2 (istring);
+	InmutableIterator<char> istringit1 (istring[0]);
+	InmutableIterator<char> istringit2 (istring[0]);
 
 	EXPECT_EQ(*istringit1, *istringit2);
 

@@ -1,10 +1,3 @@
-
-option(BUILD_DOCUMENTATION "Use Doxygen to create the HTML based API documentation" ON)
-
-# Set vars to documentation
-set(DOC_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/doc")
-set(DOC_INCLUDE_DIRECTORY "${CMAKE_SOURCE_DIR}/include")
-
 # check if Doxygen is installed
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
@@ -18,7 +11,7 @@ if (DOXYGEN_FOUND)
     
 else (DOXYGEN_FOUND)
     message(FATAL_ERROR "Doxygen need to be installed to generate the doxygen documentation")
-endif (DOXYGEN_FOUND)
+endif ()
 
 # Parse Doxygen configuration file
 configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in Doxyfile)

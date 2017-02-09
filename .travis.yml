@@ -76,7 +76,7 @@ install:
   - cd build
 
   - cmake .. -DBUILD_DOCUMENTATION=OFF
-  - cmake --build . -DBUILD_DOCUMENTATION=OFF
+  - cmake --build .
 
 script:
   - ctest -VV

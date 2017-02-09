@@ -4,3 +4,5 @@ _build/
 
 # Ignore OSX files
 .DS_Store
+
+.directory
