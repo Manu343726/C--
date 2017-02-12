@@ -11,164 +11,164 @@ namespace containers {
 
 InmutableString::InmutableString(): _string(nullptr), _length(0), _begin(), _end()
 {
-	createString(_length, "");
-	DebugUtilities::log(std::string("+++ InmutableString() called. void string created."));
-	stringLog();
+    createString(_length, "");
+    DebugUtilities::log(std::string("+++ InmutableString() called. void string created."));
+    stringLog();
 }
 
 InmutableString::InmutableString(const char* string): _string(nullptr), _length(0), _begin(), _end()
 {
 
-	createString(std::strlen(string), string);
-	DebugUtilities::log(std::string("+++ InmutableString(const char* string) called."));
-	stringLog();
+    createString(std::strlen(string), string);
+    DebugUtilities::log(std::string("+++ InmutableString(const char* string) called."));
+    stringLog();
 }
 
 InmutableString::InmutableString(const InmutableString& istring): InmutableString(istring._string)
 {
-	DebugUtilities::log(std::string("+++ InmutableString(const InmutableString& istring). Copy constructor."));
+    DebugUtilities::log(std::string("+++ InmutableString(const InmutableString& istring). Copy constructor."));
 }
 
 InmutableString::InmutableString(InmutableString&& istring): _string(nullptr), _length(0), _begin(), _end()
 {
-	DebugUtilities::log(std::string("+++ InmutableString(const InmutableString&& istring). Move constructor."));
-	stealValues(istring); // points to the same string
-	istring.setDefault(); // erase the reference from istring
+    DebugUtilities::log(std::string("+++ InmutableString(const InmutableString&& istring). Move constructor."));
+    stealValues(istring); // points to the same string
+    istring.setDefault(); // erase the reference from istring
 }
 
 InmutableString::~InmutableString()
 {
-	if (_string != nullptr)
-	{
-		DebugUtilities::log(std::string("--- ~InmutableString()."));
-		stringLog();
+    if (_string != nullptr)
+    {
+        DebugUtilities::log(std::string("--- ~InmutableString()."));
+        stringLog();
 
-		delete[] _string;
-		setDefault(); // To take precautions
-	}
-	else
-		DebugUtilities::log(std::string("--- ~InmutableString(). Nothing to delete, void string."));
+        delete[] _string;
+        setDefault(); // To take precautions
+    }
+    else
+        DebugUtilities::log(std::string("--- ~InmutableString(). Nothing to delete, void string."));
 }
 
 char& InmutableString::operator[](const size_t index) const
 {
-	return _string[index];
+    return _string[index];
 }
 
 bool InmutableString::operator==(const InmutableString& rhs) const
 {
-	return std::strcmp(_string, rhs._string) == 0;
+    return std::strcmp(_string, rhs._string) == 0;
 }
 
 bool InmutableString::operator>(const InmutableString& rhs) const
 {
-	InmutableViewer<char> thisViewer(_begin, _end);
-	InmutableViewer<char> rhsViewer(rhs._begin, rhs._end);
+    InmutableViewer<char> thisViewer(_begin, _end);
+    InmutableViewer<char> rhsViewer(rhs._begin, rhs._end);
 
-	return !std::lexicographical_compare(thisViewer.begin(), thisViewer.end(),
-										rhsViewer.begin(), rhsViewer.end());
+    return !std::lexicographical_compare(thisViewer.begin(), thisViewer.end(),
+                                        rhsViewer.begin(), rhsViewer.end());
 }
 
 bool InmutableString::operator<(const InmutableString& rhs) const
 {
-	InmutableViewer<char> thisViewer(_begin, _end);
-	InmutableViewer<char> rhsViewer(rhs._begin, rhs._end);
+    InmutableViewer<char> thisViewer(_begin, _end);
+    InmutableViewer<char> rhsViewer(rhs._begin, rhs._end);
 
-	return std::lexicographical_compare(thisViewer.begin(), thisViewer.end(),
-										rhsViewer.begin(), rhsViewer.end());
+    return std::lexicographical_compare(thisViewer.begin(), thisViewer.end(),
+                                        rhsViewer.begin(), rhsViewer.end());
 }
 
 bool InmutableString::operator>=(const InmutableString& rhs) const
 {
-	return *this == rhs || *this > rhs;
+    return *this == rhs || *this > rhs;
 }
 
 bool InmutableString::operator<=(const InmutableString& rhs) const
 {
-	return *this == rhs || *this < rhs;
+    return *this == rhs || *this < rhs;
 }
 
 InmutableString& InmutableString::operator=(const InmutableString& rhs)
 {
-	DebugUtilities::log(std::string("*** InmutableString::operator=(const InmutableString& rhs)."));
+    DebugUtilities::log(std::string("*** InmutableString::operator=(const InmutableString& rhs)."));
 
-	if (this == &rhs) // Points to the same data
-		return *this; // Not doing the assignment
+    if (this == &rhs) // Points to the same data
+        return *this; // Not doing the assignment
 
-	if (_string) 
-		delete _string; // Erase data
+    if (_string) 
+        delete _string; // Erase data
 
-	setDefault(); // To take precautions
+    setDefault(); // To take precautions
 
-	createString(rhs._length, rhs._string);
+    createString(rhs._length, rhs._string);
 
-	return *this; // Return the own object
+    return *this; // Return the own object
 }
 
 InmutableString& InmutableString::operator=(InmutableString&& rhs)
 {
-	DebugUtilities::log(std::string("*** InmutableString::operator=(const InmutableString&& rhs)."));
+    DebugUtilities::log(std::string("*** InmutableString::operator=(const InmutableString&& rhs)."));
 
-	stealValues(rhs);
-	rhs.setDefault();
+    stealValues(rhs);
+    rhs.setDefault();
 
-	return *this;
+    return *this;
 }
 
 InmutableString operator+(InmutableString lhs, const InmutableString& rhs)
 {
-	DebugUtilities::log(std::string("*** operator+(InmutableString lhs, const InmutableString& rhs)."));
-	lhs.createString(lhs._length + rhs._length, strcat(lhs._string, rhs._string));
-	lhs.stringLog();
+    DebugUtilities::log(std::string("*** operator+(InmutableString lhs, const InmutableString& rhs)."));
+    lhs.createString(lhs._length + rhs._length, strcat(lhs._string, rhs._string));
+    lhs.stringLog();
 
-	return lhs;
+    return lhs;
 }
 
 std::ostream& operator<<(std::ostream& os, const InmutableString& istring)
 {
-	os << istring._string;
+    os << istring._string;
 
     return os;
 }
 
 std::string InmutableString::toString() const
 {
-	return std::string(_string);
+    return std::string(_string);
 }
 
 void InmutableString::createString(const size_t newLength, const char* newString)
 {
-	size_t newSize = newLength+1; // Inlude '/0'
+    size_t newSize = newLength+1; // Inlude '/0'
 
-	_string = new char[newSize]; // Get allocation memory for our string
-	_length = newLength;
+    _string = new char[newSize]; // Get allocation memory for our string
+    _length = newLength;
 
-	std::strcpy(_string, newString); // Copy the string
+    std::strcpy(_string, newString); // Copy the string
 
-	_begin = _string[0];
-	_end = _string[_length + 2];
+    _begin = _string[0];
+    _end = _string[_length + 2];
 }
 
 void InmutableString::stringLog() const
 {
-	DebugUtilities::log("String: " + toString());
-	DebugUtilities::log("String length: " + std::to_string(_length) + "\n");
+    DebugUtilities::log("String: " + toString());
+    DebugUtilities::log("String length: " + std::to_string(_length) + "\n");
 }
 
 void InmutableString::setDefault()
 {
-	_string = nullptr;
-	_length = 0;
-	_begin  = nullptr;
-	_end    = nullptr;
+    _string = nullptr;
+    _length = 0;
+    _begin  = nullptr;
+    _end    = nullptr;
 }
 
 void InmutableString::stealValues( InmutableString& istring)
 {
-	_string = istring._string;
-	_length = istring._length;
-	_begin  = istring._begin;
-	_end    = istring._end;
+    _string = istring._string;
+    _length = istring._length;
+    _begin  = istring._begin;
+    _end    = istring._end;
 }
 
 } // namespace containers

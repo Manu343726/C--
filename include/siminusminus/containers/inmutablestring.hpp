@@ -137,12 +137,12 @@ public:
 
 private:
 
-	/**
+    /**
      * Create a string on memory.
      * @param newLenght: lenght of the string to create.
      * @param newString: C string.
      */
-	void createString(const size_t newLenght, const char* newString);
+    void createString(const size_t newLenght, const char* newString);
 
     /**
      * Steals the values from a istring rvalue.
@@ -150,19 +150,19 @@ private:
      */
     void stealValues(InmutableString& istring);
 
-	/**
+    /**
      * For debug. The function returns the length and the string from the
      * InmutableString object.
      */
-	void stringLog() const;
+    void stringLog() const;
 
     /*
      * Sets the string and its length to the default value;
      */
     void setDefault();
 
-	char* _string;  // String value
-	size_t _length; // length of the string
+    char* _string;  // String value
+    size_t _length; // length of the string
 
     InmutableIterator<char> _begin; // Iterator to the begining of the InmutableString
     InmutableIterator<char> _end;   // Iterator to the ending of the InmutableString

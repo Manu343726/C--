@@ -15,61 +15,61 @@ namespace containers {
  */
 template <typename T>
 class InmutableIterator : public std::iterator<std::input_iterator_tag, // iterator_category
-                                               const T* const 			// value_type
+                                               const T* const           // value_type
                                               > 
 {
 
 public:
 
-	/**
-	 * Default constructor. Init the iterator to null.
-	 */
-	InmutableIterator(): _pointer(nullptr)
-	{
+    /**
+     * Default constructor. Init the iterator to null.
+     */
+    InmutableIterator(): _pointer(nullptr)
+    {
 
-	}
+    }
 
-	/**
-	 * Constructor that takes a T object to point to object memory direction.
-	 * @param object: object of T Type to init the iterator.
-	 */
-	InmutableIterator(const T& object) : _pointer(&object)
-	{
-		
-	}
+    /**
+     * Constructor that takes a T object to point to object memory direction.
+     * @param object: object of T Type to init the iterator.
+     */
+    InmutableIterator(const T& object) : _pointer(&object)
+    {
+        
+    }
 
-	/**
-	 * Copy constructor.
-	 * @param iit: InmutableIterator<T> object that we'll copy from.
-	 */
-	InmutableIterator(const InmutableIterator<T>& iit): InmutableIterator<T>(*iit._pointer) 
-	{
+    /**
+     * Copy constructor.
+     * @param iit: InmutableIterator<T> object that we'll copy from.
+     */
+    InmutableIterator(const InmutableIterator<T>& iit): InmutableIterator<T>(*iit._pointer) 
+    {
 
-	}
+    }
 
-	/**
+    /**
      * Default destructor. Leaves point to T Object. 
      */
     ~InmutableIterator()
     {
-    	setDefault();
+        setDefault();
     }
 
-	/**
+    /**
      * Assignment operator. Copy the InmutableIterator of right hand side to 
      * the left hand side.
      * @param rhs: the right hand side of the operation.
      */
     InmutableIterator<T>& operator=(const InmutableIterator<T>& rhs)
     {
-		if (this == &rhs) // Points to the same data
-			return *this; // Not doing the assignment
+        if (this == &rhs) // Points to the same data
+            return *this; // Not doing the assignment
 
-		setDefault(); // To take precautions
+        setDefault(); // To take precautions
 
-		_pointer = rhs._pointer;
+        _pointer = rhs._pointer;
 
-		return *this; // Return the own object
+        return *this; // Return the own object
     }
 
     /**
@@ -78,20 +78,20 @@ public:
      */
     InmutableIterator<T>& operator=(const std::nullptr_t& rhs)
     {
-		setDefault(); // To take precautions
+        setDefault(); // To take precautions
 
-		_pointer = nullptr;
+        _pointer = nullptr;
 
-		return *this; // Return the own object
+        return *this; // Return the own object
     }
 
-	/**
+    /**
      * Pre-increment operator that allows go over the object.
      */
     InmutableIterator<T>& operator++()
     {
-    	++_pointer;
-		return *this;
+        ++_pointer;
+        return *this;
     }
 
     /**
@@ -100,11 +100,11 @@ public:
      */
     InmutableIterator<T> operator++(int rhs)
     {
-    	InmutableIterator<T> auxiterator (*this);
+        InmutableIterator<T> auxiterator (*this);
 
-		++_pointer;
+        ++_pointer;
 
-		return auxiterator;
+        return auxiterator;
     }
 
     /**
@@ -112,7 +112,7 @@ public:
      */
     const T& operator*() const
     {
-    	return *_pointer;
+        return *_pointer;
     }
 
     /**
@@ -123,9 +123,9 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const InmutableIterator<T>& iit)
     {
-    	os << iit;
+        os << iit;
 
-    	return os;
+        return os;
     }
 
     /**
@@ -134,7 +134,7 @@ public:
      */
     bool operator==(const InmutableIterator<T>& rhs)
     {
-    	return _pointer == rhs._pointer;
+        return _pointer == rhs._pointer;
     }
 
     /**
@@ -143,7 +143,7 @@ public:
      */
     bool operator!=(const InmutableIterator<T>& rhs)
     {
-    	return _pointer != rhs._pointer;
+        return _pointer != rhs._pointer;
     }
 
 
@@ -152,12 +152,12 @@ private:
     /**
      * Set a deafult value to InmutableIterator
      */
-	void setDefault()
-	{
-		_pointer = nullptr;
-	}
+    void setDefault()
+    {
+        _pointer = nullptr;
+    }
 
-	const T* _pointer;
+    const T* _pointer;
 
 }; // class InmutableIterator
 
