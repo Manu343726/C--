@@ -15,8 +15,8 @@ namespace containers {
  */
 template <typename T>
 class ConstContiguousIterator : public std::iterator<std::input_iterator_tag, // iterator_category
-                                               const T* const           // value_type
-                                              > 
+                                                    T                         // value_type
+                                                    > 
 {
 
 public:

@@ -154,9 +154,9 @@ TEST(ConstContiguousIterator_increment, preincrement)
     InmutableString istring("Hello");
     ConstContiguousIterator<char> iitbegin (&istring[0]);
     ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
-                                                        // 4 --> o, 
-                                                        // 5 --> '\0', 
-                                                        // 6 --> Represent the iterator end]
+                                                                           // 4 --> o, 
+                                                                           // 5 --> '\0', 
+                                                                           // 6 --> Represent the iterator end]
     ConstContiguousView<char> viewer (iitbegin, iitend);
 
     auto it = viewer.begin();
@@ -176,9 +176,9 @@ TEST(ConstContiguousIterator_increment, postincrement)
     InmutableString istring("Hello");
     ConstContiguousIterator<char> iitbegin (&istring[0]);
     ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
-                                                        // 4 --> o, 
-                                                        // 5 --> '\0', 
-                                                        // 6 --> Represent the iterator end]
+                                                                           // 4 --> o, 
+                                                                           // 5 --> '\0', 
+                                                                           // 6 --> Represent the iterator end]
     ConstContiguousView<char> viewer (iitbegin, iitend);
 
     auto it = viewer.begin();
@@ -198,9 +198,9 @@ TEST(ConstContiguousIterator_decrement, predecrement)
     InmutableString istring("Hello");
     ConstContiguousIterator<char> iitbegin (&istring[0]);
     ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
-                                                                        // 4 --> o, 
-                                                                        // 5 --> '\0', 
-                                                                        // 6 --> Represent the iterator end]
+                                                                           // 4 --> o, 
+                                                                           // 5 --> '\0', 
+                                                                           // 6 --> Represent the iterator end]
     ConstContiguousView<char> viewer (iitbegin, iitend);
 
     auto it = viewer.end();
@@ -234,6 +234,22 @@ TEST(ConstContiguousIterator_decrement, postdecrement)
         ConstContiguousIterator<char> itaux(it--);
         DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
         --pos;
+    }
+}
+
+TEST(ConstContiguousIterator_decrement, foreach)
+{
+    InmutableString istring("Hello");
+    ConstContiguousIterator<char> iitbegin (&istring[0]);
+    ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
+                                                                           // 4 --> o, 
+                                                                           // 5 --> '\0', 
+                                                                           // 6 --> Represent the iterator end]
+    ConstContiguousView<char> viewer (iitbegin, iitend);
+
+   for (auto c : viewer)
+    {
+        std::cout << c << std::endl;
     }
 }
 
