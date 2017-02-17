@@ -9,16 +9,15 @@ namespace containers {
 // InmutableString
 ///////////////////
 
-InmutableString::InmutableString(): _string(nullptr), _length(0), _begin(), _end()
+InmutableString::InmutableString(): _string(nullptr), _length(0)
 {
     createString(_length, "");
     DebugUtilities::log(std::string("+++ InmutableString() called. void string created."));
     stringLog();
 }
 
-InmutableString::InmutableString(const char* string): _string(nullptr), _length(0), _begin(), _end()
+InmutableString::InmutableString(const char* string): _string(nullptr), _length(0)
 {
-
     createString(std::strlen(string), string);
     DebugUtilities::log(std::string("+++ InmutableString(const char* string) called."));
     stringLog();
@@ -29,7 +28,7 @@ InmutableString::InmutableString(const InmutableString& istring): InmutableStrin
     DebugUtilities::log(std::string("+++ InmutableString(const InmutableString& istring). Copy constructor."));
 }
 
-InmutableString::InmutableString(InmutableString&& istring): _string(nullptr), _length(0), _begin(), _end()
+InmutableString::InmutableString(InmutableString&& istring): _string(nullptr), _length(0)
 {
     DebugUtilities::log(std::string("+++ InmutableString(const InmutableString&& istring). Move constructor."));
     stealValues(istring); // points to the same string
@@ -50,7 +49,7 @@ InmutableString::~InmutableString()
         DebugUtilities::log(std::string("--- ~InmutableString(). Nothing to delete, void string."));
 }
 
-char& InmutableString::operator[](const size_t index) const
+const char& InmutableString::operator[](const size_t index) const
 {
     return _string[index];
 }
@@ -60,10 +59,15 @@ bool InmutableString::operator==(const InmutableString& rhs) const
     return std::strcmp(_string, rhs._string) == 0;
 }
 
+bool InmutableString::operator!=(const InmutableString& rhs) const
+{
+    return std::strcmp(_string, rhs._string) != 0;
+} 
+
 bool InmutableString::operator>(const InmutableString& rhs) const
 {
-    InmutableViewer<char> thisViewer(_begin, _end);
-    InmutableViewer<char> rhsViewer(rhs._begin, rhs._end);
+    ConstContiguousView<char> thisViewer(&_string[0], &_string[_length + 2]);
+    ConstContiguousView<char> rhsViewer(&rhs._string[0], &rhs._string[rhs._length + 2]);
 
     return !std::lexicographical_compare(thisViewer.begin(), thisViewer.end(),
                                         rhsViewer.begin(), rhsViewer.end());
@@ -71,8 +75,8 @@ bool InmutableString::operator>(const InmutableString& rhs) const
 
 bool InmutableString::operator<(const InmutableString& rhs) const
 {
-    InmutableViewer<char> thisViewer(_begin, _end);
-    InmutableViewer<char> rhsViewer(rhs._begin, rhs._end);
+    ConstContiguousView<char> thisViewer(&_string[0], &_string[_length + 2]);
+    ConstContiguousView<char> rhsViewer(&rhs._string[0], &rhs._string[rhs._length + 2]);
 
     return std::lexicographical_compare(thisViewer.begin(), thisViewer.end(),
                                         rhsViewer.begin(), rhsViewer.end());
@@ -95,8 +99,8 @@ InmutableString& InmutableString::operator=(const InmutableString& rhs)
     if (this == &rhs) // Points to the same data
         return *this; // Not doing the assignment
 
-    if (_string) 
-        delete _string; // Erase data
+    if (_string != nullptr) 
+        delete[] _string; // Erase data
 
     setDefault(); // To take precautions
 
@@ -144,9 +148,6 @@ void InmutableString::createString(const size_t newLength, const char* newString
     _length = newLength;
 
     std::strcpy(_string, newString); // Copy the string
-
-    _begin = _string[0];
-    _end = _string[_length + 2];
 }
 
 void InmutableString::stringLog() const
@@ -159,16 +160,17 @@ void InmutableString::setDefault()
 {
     _string = nullptr;
     _length = 0;
-    _begin  = nullptr;
-    _end    = nullptr;
 }
 
 void InmutableString::stealValues( InmutableString& istring)
 {
     _string = istring._string;
     _length = istring._length;
-    _begin  = istring._begin;
-    _end    = istring._end;
+}
+
+size_t InmutableString::length() const
+{
+    return _length;
 }
 
 } // namespace containers

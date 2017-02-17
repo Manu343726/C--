@@ -2,8 +2,8 @@
 #define SIMINUSMINUS_CONTAINERS_INMUTABLESTRING_HPP
 
 #include <siminusminus/utils/debugutilities.hpp>
-#include <siminusminus/containers/inmutableiterator.hpp>
-#include <siminusminus/containers/inmutableviewer.hpp>
+#include <siminusminus/containers/constcontiguousiterator.hpp>
+#include <siminusminus/containers/constcontiguousview.hpp>
 #include <cstring>
 
 namespace cmm {
@@ -64,18 +64,26 @@ public:
      * Returns the i th position from our string.
      * @param index: index to string access.
      */
-    char& operator[](const size_t index) const;
+    const char& operator[](const size_t index) const;
 
     /**
      * An InmutableString is equal to another if their strings values
      * are the same.
      *
      * To compare and do other operations like ( >, <, >= and <=) we use the
-     * lexicographical order. == is an exception doing with std::strcmp for
+     * lexicographical order. == and != are an exception doing with std::strcmp for
      * efficiency.
      * @param rhs: the right hand side of the operation.
      */
     bool operator==(const InmutableString& rhs) const;
+
+    /**
+     * An InmutableString isn't equal to another if their strings values 
+     * aren't the same.
+     *
+     * Like above, the != operation is implemented with std::strcmp.
+     */
+    bool operator!=(const InmutableString& rhs) const;
 
     /**
      * Returns the true if lhs is greater lexicographically than rhs.
@@ -135,6 +143,11 @@ public:
      */
     std::string toString() const;
 
+    /**
+     * Returns the InmutableString length. The length NOT includes the end character '\0'.
+     */
+    size_t length() const;
+
 private:
 
     /**
@@ -163,9 +176,6 @@ private:
 
     char* _string;  // String value
     size_t _length; // length of the string
-
-    InmutableIterator<char> _begin; // Iterator to the begining of the InmutableString
-    InmutableIterator<char> _end;   // Iterator to the ending of the InmutableString
     
 }; // class InmutableString
 

@@ -146,19 +146,18 @@ TEST(InmutableString_operators, greaterOrEqualThan)
 }
 
 ////////////////////////////////////////
-// InmutableIterator & Inmutable Viewer
+// ConstContiguousIterator & Inmutable Viewer
 ////////////////////////////////////////
 
-TEST(InmutableStringIterator_increment, preincrement)
+TEST(ConstContiguousIterator_increment, preincrement)
 {
     InmutableString istring("Hello");
-
-    InmutableIterator<char> iitbegin (istring[0]);
-    InmutableIterator<char> iitend (istring[6]);// [0 --> H, ... ,
-                                                // 4 --> o, 
-                                                // 5 --> '\0', 
-                                                // 6 --> Represent the iterator end]
-    InmutableViewer<char> viewer (iitbegin, iitend);
+    ConstContiguousIterator<char> iitbegin (&istring[0]);
+    ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
+                                                        // 4 --> o, 
+                                                        // 5 --> '\0', 
+                                                        // 6 --> Represent the iterator end]
+    ConstContiguousView<char> viewer (iitbegin, iitend);
 
     auto it = viewer.begin();
     size_t pos = 0;
@@ -166,22 +165,21 @@ TEST(InmutableStringIterator_increment, preincrement)
     while (it != viewer.end())
     {
         EXPECT_EQ(istring[pos], *it);
-        InmutableIterator<char> itaux(++it);
+        ConstContiguousIterator<char> itaux(++it);
         DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
         ++pos;
     }
 }
 
-TEST(InmutableStringIterator_increment, postincrement)
+TEST(ConstContiguousIterator_increment, postincrement)
 {
     InmutableString istring("Hello");
-
-    InmutableIterator<char> iitbegin (istring[0]);
-    InmutableIterator<char> iitend (istring[6]);// [0 --> H, ... ,
-                                                // 4 --> o, 
-                                                // 5 --> '\0', 
-                                                // 6 --> Represent the iterator end]
-    InmutableViewer<char> viewer (iitbegin, iitend);
+    ConstContiguousIterator<char> iitbegin (&istring[0]);
+    ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
+                                                        // 4 --> o, 
+                                                        // 5 --> '\0', 
+                                                        // 6 --> Represent the iterator end]
+    ConstContiguousView<char> viewer (iitbegin, iitend);
 
     auto it = viewer.begin();
     size_t pos = 0;
@@ -189,17 +187,61 @@ TEST(InmutableStringIterator_increment, postincrement)
     while (it != viewer.end())
     {
         EXPECT_EQ(istring[pos], *it);
-        InmutableIterator<char> itaux(it++);
+        ConstContiguousIterator<char> itaux(it++);
         DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
         ++pos;
     }
 }
 
-TEST(InmutableStringIterator_operators, equalOrNotEqual)
+TEST(ConstContiguousIterator_decrement, predecrement)
+{
+    InmutableString istring("Hello");
+    ConstContiguousIterator<char> iitbegin (&istring[0]);
+    ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
+                                                                        // 4 --> o, 
+                                                                        // 5 --> '\0', 
+                                                                        // 6 --> Represent the iterator end]
+    ConstContiguousView<char> viewer (iitbegin, iitend);
+
+    auto it = viewer.end();
+    size_t pos = istring.length() + 1;
+
+    while (it != viewer.begin())
+    {
+        EXPECT_EQ(istring[pos], *it);
+        ConstContiguousIterator<char> itaux(--it);
+        DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
+        --pos;
+    }
+}
+
+TEST(ConstContiguousIterator_decrement, postdecrement)
+{
+    InmutableString istring("Hello");
+    ConstContiguousIterator<char> iitbegin (&istring[0]);
+    ConstContiguousIterator<char> iitend (&istring[istring.length() + 1]); // [0 --> H, ... ,
+                                                                           // 4 --> o, 
+                                                                           // 5 --> '\0', 
+                                                                           // 6 --> Represent the iterator end]
+    ConstContiguousView<char> viewer (iitbegin, iitend);
+
+    auto it = viewer.end();
+    size_t pos = istring.length() + 1;
+
+    while (it != viewer.begin())
+    {
+        EXPECT_EQ(istring[pos], *it);
+        ConstContiguousIterator<char> itaux(it--);
+        DebugUtilities::log("Pos " + std::to_string(pos) + "  -> " + *itaux);
+        --pos;
+    }
+}
+
+TEST(ConstContiguousIterator_operators, equalOrNotEqual)
 {
     InmutableString istring("Testing this stuff");
-    InmutableIterator<char> istringit1 (istring[0]);
-    InmutableIterator<char> istringit2 (istring[0]);
+    ConstContiguousIterator<char> istringit1 (&istring[0]);
+    ConstContiguousIterator<char> istringit2 (&istring[0]);
 
     EXPECT_EQ(*istringit1, *istringit2);
 
