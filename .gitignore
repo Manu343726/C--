@@ -5,4 +5,8 @@ _build/
 # Ignore OSX files
 .DS_Store
 
+# Ignore build scripts
+mbuild.sh
+mclean.sh
+
 .directory
