@@ -75,7 +75,7 @@ install:
   - if [ ! -d build ]; then mkdir build; fi
   - cd build
 
-  - cmake ..
+  - cmake .. -DBUILD_DOCUMENTATION=OFF
   - cmake --build .
 
 script:
